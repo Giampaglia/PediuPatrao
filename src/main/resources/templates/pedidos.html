@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Lista de Pedidos</title>
 </head>
@@ -11,6 +11,9 @@
         <h2 class="fw-bold mb-0">
             <i class="bi bi-bag me-2 text-primary"></i>Pedidos
         </h2>
+        <a th:href="@{/pedidos/novo}" class="btn btn-primary" sec:authorize="hasAnyRole('ATENDENTE','GERENTE')">
+            <i class="bi bi-plus-lg me-1"></i> Novo Pedido
+        </a>
     </div>
 
     <!-- Mensagens de feedback -->
@@ -28,43 +31,67 @@
     <!-- Tabela -->
     <div class="card shadow-sm">
         <div class="card-body p-0">
+            <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-dark">
                     <tr>
-                        <th class="ps-4">ID</th>
-                        <th>Cliente ID</th>
-                        <th>Tipo de Pizza</th>
-                        <th>Sabor</th>
-                        <th>Quantidade</th>
+                        <th class="ps-4">Pedido</th>
+                        <th>Cliente</th>
+                        <th>Tipo</th>
+                        <th class="text-center">Itens</th>
+                        <th class="text-end">Total</th>
                         <th>Status</th>
+                        <th>Entrada</th>
+                        <th>Saída</th>
+                        <th class="text-end pe-4"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Lista vazia -->
                     <tr th:if="${#lists.isEmpty(pedidos)}">
-                        <td colspan="6" class="text-center text-muted py-5">
+                        <td colspan="9" class="text-center text-muted py-5">
                             <i class="bi bi-inbox fs-3 d-block mb-2"></i>
                             Nenhum pedido encontrado.
                         </td>
                     </tr>
                     <!-- Linhas -->
                     <tr th:each="pedido : ${pedidos}">
-                        <td class="ps-4 text-muted" th:text="${pedido.id}"></td>
-                        <td th:text="${pedido.clienteId}"></td>
-                        <td th:text="${pedido.tipoPizza}"></td>
-                        <td th:text="${pedido.sabor}"></td>
-                        <td th:text="${pedido.quantidade}"></td>
+                        <td class="ps-4 fw-medium" th:text="'#' + ${pedido.codigo}"></td>
+                        <td th:text="${pedido.clienteNome ?: pedido.clienteId}"></td>
+                        <td th:text="${pedido.tipoEntrega != null} ? ${pedido.tipoEntrega.descricao} : '—'"></td>
+                        <td class="text-center" th:text="${pedido.quantidadeItens}"></td>
+                        <td class="text-end">
+                            <span th:if="${pedido.valorTotal != null}"
+                                  th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorTotal, 1, 'POINT', 2, 'COMMA')}"></span>
+                            <span class="badge bg-success-subtle text-success ms-1"
+                                  th:if="${pedido.percentualDesconto != null and pedido.percentualDesconto.signum() > 0}"
+                                  th:text="'-' + ${pedido.percentualDesconto} + '%'"></span>
+                        </td>
                         <td>
                             <span class="badge"
-                                  th:classappend="${pedido.status == 'ENTREGUE'} ? 'bg-success' :
-                                                  (${pedido.status == 'CANCELADO'} ? 'bg-danger' :
-                                                  (${pedido.status == 'EM_PREPARO'} ? 'bg-warning text-dark' : 'bg-secondary'))"
-                                  th:text="${pedido.status}">
+                                  th:classappend="${pedido.status != null} ? ${pedido.status.cor} : 'bg-light text-dark'"
+                                  th:text="${pedido.status != null} ? ${pedido.status.descricao} : '—'">
                             </span>
+                        </td>
+                        <td class="small">
+                            <div th:if="${pedido.dataHoraEntrada != null}"
+                                 th:text="${#temporals.format(pedido.dataHoraEntrada, 'dd/MM HH:mm')}"></div>
+                            <div class="text-muted" th:text="${pedido.responsavelEntrada}"></div>
+                        </td>
+                        <td class="small">
+                            <div th:if="${pedido.dataHoraSaida != null}"
+                                 th:text="${#temporals.format(pedido.dataHoraSaida, 'dd/MM HH:mm')}"></div>
+                            <div class="text-muted" th:text="${pedido.responsavelSaida}"></div>
+                        </td>
+                        <td class="text-end pe-4">
+                            <a th:href="@{/pedidos/{id}(id=${pedido.id})}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i> Detalhes
+                            </a>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
         <div class="card-footer text-muted small" th:if="${!#lists.isEmpty(pedidos)}">
             Total: <strong th:text="${#lists.size(pedidos)}"></strong> pedido(s)

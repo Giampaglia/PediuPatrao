@@ -1,27 +1,48 @@
 package com.umc.pediupatrao.config;
 
+import com.umc.pediupatrao.security.AcessoNegadoHandler;
 import com.umc.pediupatrao.service.UsuarioDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
+/**
+ * Autorização em duas camadas:
+ *  1. regras por URL (abaixo), aplicadas a páginas e APIs;
+ *  2. @PreAuthorize nos serviços (habilitado por @EnableMethodSecurity), que
+ *     protege as regras mesmo se um novo controlador esquecer a regra de URL.
+ *
+ * CSRF permanece ativo: formulários Thymeleaf recebem o token automaticamente
+ * e as chamadas fetch() enviam o token via cabeçalho (static/js/api.js).
+ */
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    private final UsuarioDetailsService usuarioDetailsService;
+    private static final String ADMIN = "ADMIN";
+    private static final String GERENTE = "GERENTE";
+    private static final String ATENDENTE = "ATENDENTE";
 
-    public SecurityConfig(UsuarioDetailsService usuarioDetailsService) {
+    private final UsuarioDetailsService usuarioDetailsService;
+    private final AcessoNegadoHandler acessoNegadoHandler;
+
+    public SecurityConfig(UsuarioDetailsService usuarioDetailsService, AcessoNegadoHandler acessoNegadoHandler) {
         this.usuarioDetailsService = usuarioDetailsService;
+        this.acessoNegadoHandler = acessoNegadoHandler;
     }
 
     @Bean
@@ -45,11 +66,43 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Desativa CSRF para REST APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/css/**", "/dist/**", "/plugins/**", "/js/**", "/images/**").permitAll()
-                        .requestMatchers("/api/usuarios").permitAll()
+                        .requestMatchers("/login", "/error", "/css/**", "/dist/**", "/plugins/**", "/js/**", "/images/**").permitAll()
+
+                        // Administração de usuários e perfis: somente ADMIN
+                        .requestMatchers("/usuarios/**", "/api/usuarios/**", "/admin").hasRole(ADMIN)
+
+                        // Auditoria: somente leitura, para ADMIN e GERENTE
+                        .requestMatchers(HttpMethod.GET, "/auditoria/**", "/api/auditoria/**").hasAnyRole(ADMIN, GERENTE)
+                        .requestMatchers("/auditoria/**", "/api/auditoria/**").denyAll()
+
+                        // Desconto e cancelamento: exclusivos do GERENTE (inclusive em relação ao ADMIN)
+                        .requestMatchers("/pedidos/*/desconto", "/pedidos/*/cancelar",
+                                "/api/pedidos/*/desconto", "/api/pedidos/*/cancelar").hasRole(GERENTE)
+
+                        // Pedidos: todos consultam; ATENDENTE e GERENTE registram e movimentam
+                        .requestMatchers("/pedidos/novo").hasAnyRole(ATENDENTE, GERENTE)
+                        .requestMatchers(HttpMethod.GET, "/pedidos/**", "/api/pedidos/**").hasAnyRole(ADMIN, GERENTE, ATENDENTE)
+                        .requestMatchers("/pedidos/**", "/api/pedidos/**").hasAnyRole(ATENDENTE, GERENTE)
+
+                        // Clientes: ATENDENTE cadastra/atualiza, GERENTE consulta (e é o único que exclui)
+                        .requestMatchers("/clientes/novo", "/clientes/salvar", "/clientes/editar/**").hasRole(ATENDENTE)
+                        .requestMatchers(HttpMethod.DELETE, "/api/clientes/**").hasRole(GERENTE)
+                        .requestMatchers(HttpMethod.GET, "/clientes/**", "/api/clientes/**").hasAnyRole(ATENDENTE, GERENTE)
+                        .requestMatchers("/clientes/**", "/api/clientes/**").hasRole(ATENDENTE)
+
+                        // Produtos: consulta para todos os perfis, manutenção para ADMIN e GERENTE
+                        .requestMatchers(HttpMethod.GET, "/produtos/**", "/api/produtos/**").hasAnyRole(ADMIN, GERENTE, ATENDENTE)
+                        .requestMatchers("/produtos/**", "/api/produtos/**").hasAnyRole(ADMIN, GERENTE)
+
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(ex -> ex
+                        // APIs respondem 401 em vez de redirecionar para a tela de login
+                        .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                                AcessoNegadoHandler::isApi)
+                        // 403 + registro da tentativa na auditoria
+                        .accessDeniedHandler(acessoNegadoHandler)
                 )
                 .formLogin(form -> form
                         .loginPage("/login")

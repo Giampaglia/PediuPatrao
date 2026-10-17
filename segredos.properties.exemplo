@@ -1,0 +1,3 @@
+# Copie este arquivo para "segredos.properties" (na raiz do projeto) e informe a sua string de conexão.
+# O arquivo segredos.properties está no .gitignore e não deve ser enviado ao repositório.
+spring.data.mongodb.uri=mongodb+srv://USUARIO:SENHA@SEU-CLUSTER.mongodb.net/?retryWrites=true&w=majority

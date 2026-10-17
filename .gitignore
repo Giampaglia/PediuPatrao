@@ -1,1 +1,13 @@
 /target/
+
+# Credenciais locais (string de conexão do MongoDB)
+segredos.properties
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+nbproject/private/

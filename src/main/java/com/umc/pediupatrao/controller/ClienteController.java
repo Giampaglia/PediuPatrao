@@ -1,8 +1,8 @@
 package com.umc.pediupatrao.controller;
 
 import com.umc.pediupatrao.entity.Cliente;
+import com.umc.pediupatrao.exception.RecursoNaoEncontradoException;
 import com.umc.pediupatrao.service.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -12,12 +12,21 @@ import org.springframework.http.ResponseEntity;
 @RequestMapping("/api/clientes")
 public class ClienteController {
 
-    @Autowired
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
+
+    public ClienteController(ClienteService clienteService) {
+        this.clienteService = clienteService;
+    }
 
     @GetMapping
     public List<Cliente> listarClientes() {
         return clienteService.listarClientes();
+    }
+
+    @GetMapping("/{id}")
+    public Cliente buscarCliente(@PathVariable String id) {
+        return clienteService.buscarPorId(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente não encontrado."));
     }
 
     @DeleteMapping("/{id}")
@@ -28,7 +37,7 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<Cliente> salvarCliente(@RequestBody Cliente cliente) {
-        Cliente salvo = clienteService.salvar(cliente);
+        Cliente salvo = clienteService.novoCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 
