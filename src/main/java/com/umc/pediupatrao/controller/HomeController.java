@@ -3,15 +3,16 @@ package com.umc.pediupatrao.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.umc.pediupatrao.entity.Cliente;
-import com.umc.pediupatrao.entity.Pedido;
+import com.umc.pediupatrao.entity.Perfil;
 import com.umc.pediupatrao.entity.Produto;
 import com.umc.pediupatrao.entity.Usuario;
+import com.umc.pediupatrao.exception.RecursoNaoEncontradoException;
+import com.umc.pediupatrao.exception.RegraNegocioException;
+import com.umc.pediupatrao.security.UsuarioLogado;
 import com.umc.pediupatrao.service.ClienteService;
-import com.umc.pediupatrao.service.PedidoService;
 import com.umc.pediupatrao.service.ProdutoService;
 import com.umc.pediupatrao.service.UsuarioService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,17 +26,18 @@ public class HomeController {
 
     private static final Logger log = LoggerFactory.getLogger(HomeController.class);
 
-    @Autowired
-    private PedidoService pedidoService;
+    private final ClienteService clienteService;
+    private final ProdutoService produtoService;
+    private final UsuarioService usuarioService;
+    private final UsuarioLogado usuarioLogado;
 
-    @Autowired
-    private ClienteService clienteService;
-
-    @Autowired
-    private ProdutoService produtoService;
-
-    @Autowired
-    private UsuarioService usuarioService;
+    public HomeController(ClienteService clienteService, ProdutoService produtoService,
+            UsuarioService usuarioService, UsuarioLogado usuarioLogado) {
+        this.clienteService = clienteService;
+        this.produtoService = produtoService;
+        this.usuarioService = usuarioService;
+        this.usuarioLogado = usuarioLogado;
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -49,7 +51,7 @@ public class HomeController {
     }
 
     // ========================
-    // USUÁRIOS
+    // USUÁRIOS (somente ADMIN — ver SecurityConfig e UsuarioService)
     // ========================
     @GetMapping("/usuarios")
     public String listarUsuarios(Model model) {
@@ -63,14 +65,14 @@ public class HomeController {
     @GetMapping("/usuarios/novo")
     public String novoUsuarioForm(Model model) {
         model.addAttribute("usuario", new Usuario());
-        model.addAttribute("content", "usuarios/form :: content");
-        return "layout";
+        return formularioUsuario(model);
     }
 
     @GetMapping("/usuarios/editar/{id}")
     public String editarUsuarioForm(@PathVariable String id, Model model,
             RedirectAttributes redirectAttributes) {
         boolean encontrado = usuarioService.buscarPorId(id).map(u -> {
+            u.setPassword(null); // o hash da senha não vai para o formulário
             model.addAttribute("usuario", u);
             return true;
         }).orElse(false);
@@ -80,23 +82,39 @@ public class HomeController {
             return "redirect:/usuarios";
         }
 
-        model.addAttribute("content", "usuarios/form :: content");
-        return "layout";
+        return formularioUsuario(model);
     }
 
     @PostMapping("/usuarios/salvar")
-    public String salvarUsuario(@ModelAttribute Usuario usuario,
+    public String salvarUsuario(@ModelAttribute Usuario usuario, Model model,
             RedirectAttributes redirectAttributes) {
-        usuarioService.salvarUsuario(usuario);
+        try {
+            usuarioService.salvarUsuario(usuario);
+        } catch (RegraNegocioException e) {
+            usuario.setId(null);
+            usuario.setPassword(null);
+            model.addAttribute("erro", e.getMessage());
+            return formularioUsuario(model);
+        }
         redirectAttributes.addFlashAttribute("sucesso", "Usuário criado com sucesso!");
         return "redirect:/usuarios";
     }
 
     @PostMapping("/usuarios/editar/{id}")
     public String atualizarUsuario(@PathVariable String id,
-            @ModelAttribute Usuario usuario,
+            @ModelAttribute Usuario usuario, Model model,
             RedirectAttributes redirectAttributes) {
-        usuarioService.atualizarUsuario(id, usuario);
+        try {
+            usuarioService.atualizarUsuario(id, usuario);
+        } catch (RecursoNaoEncontradoException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/usuarios";
+        } catch (RegraNegocioException e) {
+            usuario.setId(id);
+            usuario.setPassword(null);
+            model.addAttribute("erro", e.getMessage());
+            return formularioUsuario(model);
+        }
         redirectAttributes.addFlashAttribute("sucesso", "Usuário atualizado com sucesso!");
         return "redirect:/usuarios";
     }
@@ -104,20 +122,23 @@ public class HomeController {
     @PostMapping("/usuarios/deletar/{id}")
     public String deletarUsuario(@PathVariable String id,
             RedirectAttributes redirectAttributes) {
-        usuarioService.deletarUsuario(id);
-        redirectAttributes.addFlashAttribute("sucesso", "Usuário removido com sucesso!");
+        try {
+            usuarioService.deletarUsuario(id);
+            redirectAttributes.addFlashAttribute("sucesso", "Usuário removido com sucesso!");
+        } catch (RegraNegocioException | RecursoNaoEncontradoException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+        }
         return "redirect:/usuarios";
     }
 
-    // ========================
-    // PEDIDOS
-    // ========================
-    @GetMapping("/pedidos")
-    public String pedidos(Model model) {
-        List<Pedido> pedidos = pedidoService.listarPedidos();
-        model.addAttribute("pedidos", pedidos);
-        model.addAttribute("content", "pedidos :: content");
-        log.info("Carregando fragmento: pedidos :: content");
+    private String formularioUsuario(Model model) {
+        Usuario usuario = (Usuario) model.getAttribute("usuario");
+        boolean proprio = usuario != null && usuario.getId() != null
+                && usuarioService.buscarPorId(usuario.getId())
+                        .map(u -> u.getUsername().equals(usuarioLogado.username())).orElse(false);
+        model.addAttribute("perfis", Perfil.values());
+        model.addAttribute("editandoProprio", proprio);
+        model.addAttribute("content", "usuarios/form :: content");
         return "layout";
     }
 
@@ -153,9 +174,15 @@ public class HomeController {
     }
 
     @PostMapping("/clientes/salvar")
-    public String salvarCliente(@ModelAttribute Cliente cliente,
+    public String salvarCliente(@ModelAttribute Cliente cliente, Model model,
             RedirectAttributes redirectAttributes) {
-        clienteService.salvar(cliente);
+        try {
+            clienteService.novoCliente(cliente);
+        } catch (RegraNegocioException e) {
+            model.addAttribute("erro", e.getMessage());
+            model.addAttribute("content", "clientes/form :: content");
+            return "layout";
+        }
         redirectAttributes.addFlashAttribute("sucesso", "Cliente criado com sucesso!");
         return "redirect:/clientes";
     }
@@ -179,10 +206,19 @@ public class HomeController {
 
     @PostMapping("/clientes/editar/{id}")
     public String atualizarCliente(@PathVariable String id,
-            @ModelAttribute Cliente cliente,
+            @ModelAttribute Cliente cliente, Model model,
             RedirectAttributes redirectAttributes) {
         cliente.setId(id);
-        clienteService.salvar(cliente);
+        try {
+            clienteService.salvar(cliente);
+        } catch (RecursoNaoEncontradoException e) {
+            redirectAttributes.addFlashAttribute("erro", e.getMessage());
+            return "redirect:/clientes";
+        } catch (RegraNegocioException e) {
+            model.addAttribute("erro", e.getMessage());
+            model.addAttribute("content", "clientes/form :: content");
+            return "layout";
+        }
         redirectAttributes.addFlashAttribute("sucesso", "Cliente atualizado com sucesso!");
         return "redirect:/clientes";
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Lista de Clientes</title>
 </head>
@@ -9,9 +9,21 @@
         <h2 class="fw-bold mb-0">
             <i class="bi bi-person-raised-hand me-2 text-primary"></i>Clientes
         </h2>
-        <a href="/clientes/novo" class="btn btn-primary">
+        <a href="/clientes/novo" class="btn btn-primary" sec:authorize="hasRole('ATENDENTE')">
             <i class="bi bi-plus-lg me-1"></i> Novo Cliente
         </a>
+    </div>
+
+    <!-- Mensagens de feedback -->
+    <div class="alert alert-success alert-dismissible fade show" th:if="${sucesso}" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        <span th:text="${sucesso}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <div class="alert alert-danger alert-dismissible fade show" th:if="${erro}" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${erro}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
 
     <!-- Tabela de clientes -->
@@ -33,6 +45,11 @@
         </div>
     </div>
 
+    <!-- Apenas controla quais botões aparecem; o backend valida o perfil de qualquer forma -->
+    <script th:inline="javascript">
+        const PODE_EDITAR = /*[[${#authorization.expression('hasRole(''ATENDENTE'')')}]]*/ false;
+        const PODE_EXCLUIR = /*[[${#authorization.expression('hasRole(''GERENTE'')')}]]*/ false;
+    </script>
     <script>
         const API_URL = '/api/clientes';
         const tabelaClientes = document.getElementById('clientes-tabela');
@@ -51,8 +68,12 @@
         }
 
         async function carregarClientes() {
-            const response = await fetch(API_URL);
-            const clientes = await response.json();
+            const resposta = await api(API_URL);
+            if (!resposta.ok) {
+                tabelaClientes.innerHTML = `<tr><td colspan="4" class="text-danger text-center py-4">Erro ao carregar clientes (${resposta.status}).</td></tr>`;
+                return;
+            }
+            const clientes = resposta.dados;
             tabelaClientes.innerHTML = '';
 
             if (clientes.length === 0) {
@@ -67,32 +88,38 @@
             }
 
             clientes.forEach(cliente => {
+                const id = encodeURIComponent(cliente.id);
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${cliente.nome || '—'}</td>
-                    <td>${cliente.telefone || '—'}</td>
-                    <td>${formatarEndereco(cliente)}</td>
+                    <td>${escapeHtml(cliente.nome || '—')}</td>
+                    <td>${escapeHtml(cliente.telefone || '—')}</td>
+                    <td>${escapeHtml(formatarEndereco(cliente))}</td>
                     <td class="text-end pe-4">
-                        <a href="/clientes/editar/${cliente.id}" class="btn btn-sm btn-outline-primary me-1">
+                        ${PODE_EDITAR ? `<a href="/clientes/editar/${id}" class="btn btn-sm btn-outline-primary me-1">
                             <i class="bi bi-pencil-fill"></i> Editar
-                        </a>
-                        <button class="btn btn-sm btn-outline-danger" onclick="excluirCliente('${cliente.id}')">
+                        </a>` : ''}
+                        ${PODE_EXCLUIR ? `<button class="btn btn-sm btn-outline-danger" data-excluir="${escapeHtml(cliente.id)}">
                             <i class="bi bi-trash-fill"></i> Excluir
-                        </button>
+                        </button>` : ''}
                     </td>
                 `;
                 tabelaClientes.appendChild(row);
             });
         }
 
+        tabelaClientes.addEventListener('click', e => {
+            const botao = e.target.closest('[data-excluir]');
+            if (botao) excluirCliente(botao.dataset.excluir);
+        });
+
         async function excluirCliente(id) {
             if (confirm('Tem certeza que deseja excluir este cliente?')) {
-                const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-                if (response.ok) {
+                const resposta = await api(`${API_URL}/${encodeURIComponent(id)}`, { method: 'DELETE' });
+                if (resposta.ok) {
                     alert('Cliente excluído com sucesso!');
                     carregarClientes();
                 } else {
-                    alert('Erro ao excluir o cliente.');
+                    alert('Erro ao excluir o cliente: ' + ((resposta.dados && resposta.dados.mensagem) || resposta.status));
                 }
             }
         }

@@ -16,6 +16,11 @@
         </h2>
     </div>
 
+    <div class="alert alert-danger" th:if="${erro}" role="alert" style="max-width: 600px;">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <span th:text="${erro}"></span>
+    </div>
+
     <div class="card shadow-sm" style="max-width: 600px;">
         <div class="card-body p-4">
 
