@@ -1,0 +1,62 @@
+{
+  "periodo": {
+    "dataInicio": "2026-11-08",
+    "dataFim": "2026-11-08",
+    "dias": 1
+  },
+  "total": 8,
+  "emAndamento": 4,
+  "finalizados": 3,
+  "cancelados": 1,
+  "porStatus": [
+    {
+      "status": "RECEBIDO",
+      "descricao": "Recebido",
+      "quantidade": 0,
+      "percentual": 0,
+      "valorTotal": 0
+    },
+    {
+      "status": "EM_PREPARACAO",
+      "descricao": "Em preparação",
+      "quantidade": 4,
+      "percentual": 50,
+      "valorTotal": 181.5
+    },
+    {
+      "status": "PRONTO",
+      "descricao": "Pronto",
+      "quantidade": 0,
+      "percentual": 0,
+      "valorTotal": 0
+    },
+    {
+      "status": "SAIU_PARA_ENTREGA",
+      "descricao": "Saiu para entrega",
+      "quantidade": 0,
+      "percentual": 0,
+      "valorTotal": 0
+    },
+    {
+      "status": "RETIRADO",
+      "descricao": "Retirado",
+      "quantidade": 0,
+      "percentual": 0,
+      "valorTotal": 0
+    },
+    {
+      "status": "FINALIZADO",
+      "descricao": "Finalizado",
+      "quantidade": 3,
+      "percentual": 37.5,
+      "valorTotal": 320
+    },
+    {
+      "status": "CANCELADO",
+      "descricao": "Cancelado",
+      "quantidade": 1,
+      "percentual": 12.5,
+      "valorTotal": 58.9
+    }
+  ]
+}

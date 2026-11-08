@@ -1,0 +1,28 @@
+# Saída do comando: mvnw test  (08/11/2026 19:12)
+# Java: java version "21.0.12" 2026-07-21 LTS
+
+[INFO] Running com.umc.pediupatrao.config.DadosDemonstracaoConfigTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.201 s -- in com.umc.pediupatrao.config.DadosDemonstracaoConfigTest
+[INFO] Running com.umc.pediupatrao.config.MongoTimeoutConfigTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.322 s -- in com.umc.pediupatrao.config.MongoTimeoutConfigTest
+[INFO] Running com.umc.pediupatrao.controller.DashboardApiTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.265 s -- in com.umc.pediupatrao.controller.DashboardApiTest
+[INFO] Running com.umc.pediupatrao.controller.PaginasTest
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.558 s -- in com.umc.pediupatrao.controller.PaginasTest
+[INFO] Running com.umc.pediupatrao.controller.SegurancaApiTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.854 s -- in com.umc.pediupatrao.controller.SegurancaApiTest
+[INFO] Running com.umc.pediupatrao.DashboardIntegracaoTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.912 s -- in com.umc.pediupatrao.DashboardIntegracaoTest
+[INFO] Running com.umc.pediupatrao.service.ClienteServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.138 s -- in com.umc.pediupatrao.service.ClienteServiceTest
+[INFO] Running com.umc.pediupatrao.service.dashboard.CalculadoraIndicadoresTest
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.040 s -- in com.umc.pediupatrao.service.dashboard.CalculadoraIndicadoresTest
+[INFO] Running com.umc.pediupatrao.service.dashboard.DashboardServiceTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.051 s -- in com.umc.pediupatrao.service.dashboard.DashboardServiceTest
+[INFO] Running com.umc.pediupatrao.service.PedidoServiceTest
+[INFO] Tests run: 17, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.166 s -- in com.umc.pediupatrao.service.PedidoServiceTest
+[INFO] Running com.umc.pediupatrao.service.UsuarioServiceTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.173 s -- in com.umc.pediupatrao.service.UsuarioServiceTest
+[INFO] Tests run: 94, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+[INFO] Total time:  31.426 s

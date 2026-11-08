@@ -1,0 +1,34 @@
+{
+  "periodo": {
+    "dataInicio": "2026-10-10",
+    "dataFim": "2026-11-08",
+    "dias": 30
+  },
+  "faturamentoTotal": 38279.23,
+  "categorias": [
+    {
+      "categoria": "Pizza",
+      "quantidade": 557,
+      "faturamento": 28795.63,
+      "participacao": 75.2
+    },
+    {
+      "categoria": "Esfiha",
+      "quantidade": 601,
+      "faturamento": 4335.92,
+      "participacao": 11.3
+    },
+    {
+      "categoria": "Lanche",
+      "quantidade": 116,
+      "faturamento": 3007.63,
+      "participacao": 7.9
+    },
+    {
+      "categoria": "Bebida",
+      "quantidade": 192,
+      "faturamento": 2140.05,
+      "participacao": 5.6
+    }
+  ]
+}

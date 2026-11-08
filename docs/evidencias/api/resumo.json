@@ -1,0 +1,37 @@
+{
+  "periodo": {
+    "dataInicio": "2026-10-10",
+    "dataFim": "2026-11-08",
+    "dias": 30
+  },
+  "faturamento": 38279.23,
+  "totalPedidos": 482,
+  "pedidosValidos": 450,
+  "pedidosCancelados": 32,
+  "taxaCancelamento": 6.6,
+  "ticketMedio": 85.06,
+  "itensVendidos": 1466,
+  "totalDescontos": 328.77,
+  "pedidosComDesconto": 32,
+  "pedidosEmAndamento": 4,
+  "tempoMedioAteSaidaMinutos": 34.6,
+  "comparativo": {
+    "periodoAnterior": {
+      "dataInicio": "2026-09-10",
+      "dataFim": "2026-10-09",
+      "dias": 30
+    },
+    "faturamento": 32864.25,
+    "pedidosValidos": 399,
+    "ticketMedio": 82.37,
+    "variacaoFaturamento": 16.5,
+    "variacaoPedidos": 12.8,
+    "variacaoTicketMedio": 3.3
+  },
+  "qualidadeDados": {
+    "pedidosSemStatus": 0,
+    "pedidosSemValor": 0,
+    "pedidosSemDataEntrada": 0
+  },
+  "geradoEm": "2026-11-08T19:00:57.9008307"
+}

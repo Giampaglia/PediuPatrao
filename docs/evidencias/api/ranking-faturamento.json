@@ -1,0 +1,43 @@
+{
+  "periodo": {
+    "dataInicio": "2026-10-10",
+    "dataFim": "2026-11-08",
+    "dias": 30
+  },
+  "criterio": "FATURAMENTO",
+  "limite": 3,
+  "totalItensVendidos": 1466,
+  "faturamentoTotal": 38279.23,
+  "produtos": [
+    {
+      "posicao": 1,
+      "produtoId": "6af0f0f31679014347f7c247",
+      "nome": "Pizza Calabresa",
+      "categoria": "Pizza",
+      "quantidade": 127,
+      "faturamento": 6287.4,
+      "pedidos": 107,
+      "participacao": 16.4
+    },
+    {
+      "posicao": 2,
+      "produtoId": "6af0f0f41679014347f7c24a",
+      "nome": "Pizza Frango com Catupiry",
+      "categoria": "Pizza",
+      "quantidade": 105,
+      "faturamento": 5928.97,
+      "pedidos": 89,
+      "participacao": 15.5
+    },
+    {
+      "posicao": 3,
+      "produtoId": "6af0f0f41679014347f7c248",
+      "nome": "Pizza Mussarela",
+      "categoria": "Pizza",
+      "quantidade": 119,
+      "faturamento": 5314.49,
+      "pedidos": 99,
+      "participacao": 13.9
+    }
+  ]
+}

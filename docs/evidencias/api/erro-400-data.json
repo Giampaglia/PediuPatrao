@@ -1,0 +1,7 @@
+{
+  "dataHora": "2026-11-08T19:01:06.077590600",
+  "status": 400,
+  "erro": "Bad Request",
+  "mensagem": "Data inválida no parâmetro 'dataInicio': '08/11/2026'. Use o formato AAAA-MM-DD, ex.: 2026-11-08.",
+  "caminho": "/api/dashboard/resumo"
+}
