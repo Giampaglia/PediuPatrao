@@ -1,0 +1,6 @@
+{
+  "status": 403,
+  "erro": "Forbidden",
+  "mensagem": "Acesso negado: Perfil sem permissão para a operação.",
+  "caminho": "/api/dashboard/resumo"
+}

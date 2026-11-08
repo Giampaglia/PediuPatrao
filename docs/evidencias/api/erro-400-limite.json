@@ -1,0 +1,7 @@
+{
+  "dataHora": "2026-11-08T19:01:07.877589",
+  "status": 400,
+  "erro": "Bad Request",
+  "mensagem": "O parâmetro 'limite' deve estar entre 1 e 50 (informado: 500).",
+  "caminho": "/api/dashboard/produtos/mais-vendidos"
+}

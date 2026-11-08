@@ -1,0 +1,40 @@
+{
+  "agrupamento": "MES",
+  "periodo": {
+    "dataInicio": "2026-08-11",
+    "dataFim": "2026-11-08",
+    "dias": 90
+  },
+  "totalPedidos": 1218,
+  "faturamentoTotal": 102533.24,
+  "pontos": [
+    {
+      "chave": "2026-08",
+      "rotulo": "ago/26",
+      "pedidos": 256,
+      "faturamento": 21876.84,
+      "ticketMedio": 85.46
+    },
+    {
+      "chave": "2026-09",
+      "rotulo": "set/26",
+      "pedidos": 385,
+      "faturamento": 32070.77,
+      "ticketMedio": 83.3
+    },
+    {
+      "chave": "2026-10",
+      "rotulo": "out/26",
+      "pedidos": 468,
+      "faturamento": 39216.55,
+      "ticketMedio": 83.8
+    },
+    {
+      "chave": "2026-11",
+      "rotulo": "nov/26",
+      "pedidos": 109,
+      "faturamento": 9369.08,
+      "ticketMedio": 85.95
+    }
+  ]
+}

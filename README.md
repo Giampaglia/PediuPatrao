@@ -1,6 +1,52 @@
-# PediuPatrão — Atividade Prática M1
+# PediuPatrão
 
-Sistema de pedidos de pizzaria (Java 21, Spring Boot 3.4, Spring Security, MongoDB e Thymeleaf), evoluído com controle de acesso por perfil, fluxo controlado de pedidos, descontos e cancelamentos exclusivos do gerente e auditoria persistente.
+Sistema de pedidos de pizzaria (Java 21, Spring Boot 3.4, Spring Security, MongoDB e Thymeleaf), evoluído com controle de acesso por perfil, fluxo controlado de pedidos, descontos e cancelamentos exclusivos do gerente e auditoria persistente (atividade M1) e com um **dashboard administrativo** alimentado por uma API REST própria (atividade M2).
+
+## Dashboard administrativo (atividade M2)
+
+Painel para ADMIN e GERENTE acompanharem vendas, pedidos e tendências, em `http://localhost:8080/dashboard` (menu **Dashboard**).
+
+| Entregável | Onde está |
+|---|---|
+| Requisitos funcionais e não funcionais, regras de negócio, arquitetura e decisões de projeto | [docs/REQUISITOS.md](docs/REQUISITOS.md) |
+| Documentação dos endpoints (parâmetros, exemplos de requisição e resposta, erros) | [docs/API.md](docs/API.md) |
+| Evidências de testes (94 testes automatizados, testes manuais da API e capturas de tela) | [docs/TESTES.md](docs/TESTES.md) |
+| Roteiro da apresentação em vídeo | [docs/APRESENTACAO.md](docs/APRESENTACAO.md) |
+| Código da API | `controller/DashboardController`, `service/dashboard/*`, `repository/ConsultaPedidosRepository`, `dto/dashboard/*` |
+| Código da tela | `templates/dashboard.html`, `static/js/dashboard.js`, `static/css/dashboard.css` |
+
+| Requisito | Recurso |
+|---|---|
+| RF01 — Indicadores gerais | Faturamento, pedidos, ticket médio, itens, cancelamentos, descontos e tempo até a saída, comparados com o período anterior |
+| RF02 — Análise de vendas | Evolução por dia/semana/mês, horários de pico, dia da semana, categorias, entrega x retirada |
+| RF03 — Situação dos pedidos | Pedidos por status e lista dos pedidos recentes |
+| RF04 — Produtos mais vendidos | Ranking por quantidade ou faturamento |
+| RF05 — Filtros | Período, status, tipo de entrega, categoria e produto |
+| RF06 — Integração com a API | 8 endpoints `GET /api/dashboard/*` integrados ao MongoDB |
+| RF07 — Atualização e tratamento | Atualização a cada 60 s, estados de carregamento/vazio/erro, sessão expirada, banco indisponível, dados legados |
+
+### Gerando dados para demonstrar o dashboard
+
+Com o banco vazio, o painel não tem o que mostrar. Para gerar cerca de 90 dias de pedidos fictícios (com picos no jantar e nos fins de semana), inicie com:
+
+```bash
+# Windows (PowerShell)
+mvnw.cmd spring-boot:run "-Dspring-boot.run.arguments=--pediupatrao.demo.gerar-pedidos=true"
+# Linux/macOS
+./mvnw spring-boot:run -Dspring-boot.run.arguments=--pediupatrao.demo.gerar-pedidos=true
+```
+
+A geração só acontece se o banco tiver **menos de 50 pedidos**, para nunca misturar dados fictícios com dados reais. Ela também cria os produtos e clientes de exemplo que faltarem.
+
+### Fluxo de branches (gitflow)
+
+- `main`: versões entregues.
+- `develop`: integração.
+- `feature/dashboard-api`: implementação da API e do dashboard, integrada à `develop`.
+
+---
+
+# Atividade M1
 
 ## Como executar
 
@@ -28,7 +74,7 @@ Acesse `http://localhost:8080`. Na primeira execução, o `DataInitializer` cria
 | `gerente01`   | `teste123` | GERENTE   |
 | `atendente01` | `teste123` | ATENDENTE |
 
-Testes automatizados:
+Testes automatizados (não precisam de banco configurado: os testes de integração sobem um MongoDB embarcado, baixado na primeira execução):
 
 ```bash
 mvnw.cmd test

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "6af0f0f41679014347f7c76c",
+    "codigo": "F7C76C",
+    "clienteNome": "Bruno Costa",
+    "status": "EM_PREPARACAO",
+    "statusDescricao": "Em preparação",
+    "tipoEntrega": "ENTREGA",
+    "quantidadeItens": 1,
+    "valorTotal": 12,
+    "dataHoraEntrada": "2026-11-08T18:55:09",
+    "minutosDesdeEntrada": 5
+  },
+  {
+    "id": "6af0f0f41679014347f7c766",
+    "codigo": "F7C766",
+    "clienteNome": "Olívia Cardoso",
+    "status": "EM_PREPARACAO",
+    "statusDescricao": "Em preparação",
+    "tipoEntrega": "ENTREGA",
+    "quantidadeItens": 1,
+    "valorTotal": 4,
+    "dataHoraEntrada": "2026-11-08T18:47:08",
+    "minutosDesdeEntrada": 13
+  },
+  {
+    "id": "6af0f0f41679014347f7c768",
+    "codigo": "F7C768",
+    "clienteNome": "Karina Teixeira",
+    "status": "EM_PREPARACAO",
+    "statusDescricao": "Em preparação",
+    "tipoEntrega": "ENTREGA",
+    "quantidadeItens": 3,
+    "valorTotal": 71.9,
+    "dataHoraEntrada": "2026-11-08T18:45:33",
+    "minutosDesdeEntrada": 15
+  }
+]

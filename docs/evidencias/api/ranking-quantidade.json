@@ -1,0 +1,63 @@
+{
+  "periodo": {
+    "dataInicio": "2026-10-10",
+    "dataFim": "2026-11-08",
+    "dias": 30
+  },
+  "criterio": "QUANTIDADE",
+  "limite": 5,
+  "totalItensVendidos": 1466,
+  "faturamentoTotal": 38279.23,
+  "produtos": [
+    {
+      "posicao": 1,
+      "produtoId": "6af0f0f41679014347f7c24d",
+      "nome": "Esfiha de Carne",
+      "categoria": "Esfiha",
+      "quantidade": 326,
+      "faturamento": 2422.12,
+      "pedidos": 76,
+      "participacao": 22.2
+    },
+    {
+      "posicao": 2,
+      "produtoId": "6af0f0f41679014347f7c24e",
+      "nome": "Esfiha de Queijo",
+      "categoria": "Esfiha",
+      "quantidade": 275,
+      "faturamento": 1913.8,
+      "pedidos": 63,
+      "participacao": 18.8
+    },
+    {
+      "posicao": 3,
+      "produtoId": "6af0f0f31679014347f7c247",
+      "nome": "Pizza Calabresa",
+      "categoria": "Pizza",
+      "quantidade": 127,
+      "faturamento": 6287.4,
+      "pedidos": 107,
+      "participacao": 8.7
+    },
+    {
+      "posicao": 4,
+      "produtoId": "6af0f0f41679014347f7c251",
+      "nome": "Refrigerante 2L",
+      "categoria": "Bebida",
+      "quantidade": 120,
+      "faturamento": 1431.6,
+      "pedidos": 103,
+      "participacao": 8.2
+    },
+    {
+      "posicao": 5,
+      "produtoId": "6af0f0f41679014347f7c248",
+      "nome": "Pizza Mussarela",
+      "categoria": "Pizza",
+      "quantidade": 119,
+      "faturamento": 5314.49,
+      "pedidos": 99,
+      "participacao": 8.1
+    }
+  ]
+}

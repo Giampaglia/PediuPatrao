@@ -1,0 +1,137 @@
+/* Dashboard administrativo — tokens de cor por papel (paleta validada para daltonismo) */
+.dashboard {
+    --db-superficie: #fcfcfb;
+    --db-plano: #f6f6f3;
+    --db-tinta: #0b0b0b;
+    --db-tinta-2: #52514e;
+    --db-suave: #898781;
+    --db-grade: #e1e0d9;
+    --db-eixo: #c3c2b7;
+    --db-borda: rgba(11, 11, 11, 0.10);
+    --db-serie-1: #2a78d6;
+    --db-serie-2: #eb6834;
+    --db-bom: #006300;
+    --db-critico: #d03b3b;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--db-tinta);
+    min-width: 0;
+    padding-bottom: 1rem;
+}
+
+/* O <main> é item flex ao lado da sidebar: sem isso os gráficos não encolhem */
+body > main { min-width: 0; background: var(--db-plano, #f6f6f3); }
+
+.db-cabecalho {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: .75rem;
+    margin-bottom: 1rem;
+}
+.db-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; }
+.db-subtitulo { color: var(--db-tinta-2); font-size: .875rem; }
+
+.db-card {
+    background: var(--db-superficie);
+    border: 1px solid var(--db-borda);
+    border-radius: 10px;
+    padding: 1rem 1.125rem;
+    position: relative;
+}
+.db-card h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+.db-card-cabecalho {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: .5rem;
+    margin-bottom: .75rem;
+}
+.db-ferramentas { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.db-ferramentas .btn-link { padding-left: .25rem; padding-right: .25rem; }
+
+/* Filtros */
+.db-filtros { margin-bottom: 1rem; }
+.db-filtros .form-label { font-size: .75rem; color: var(--db-tinta-2); margin-bottom: .25rem; }
+.db-filtros .db-produto { min-width: 12rem; }
+.db-status-menu { min-width: 14rem; }
+.db-status-menu .form-check { margin: .125rem .25rem; }
+.db-erro-filtro { color: var(--db-critico); font-size: .875rem; margin-top: .5rem; }
+.db-erro-filtro:empty { display: none; }
+
+/* Indicadores (RF01) */
+.db-hero { display: flex; flex-direction: column; justify-content: center; gap: .25rem; }
+.db-hero-valor { font-size: 48px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+.db-hero-rodape { color: var(--db-suave); font-size: .75rem; margin-top: .5rem; }
+.db-hero-rodape:empty { display: none; }
+.db-tile { height: 100%; }
+.db-tile-rotulo { color: var(--db-tinta-2); font-size: .8125rem; }
+.db-tile-valor { font-size: 1.625rem; font-weight: 600; line-height: 1.2; margin-top: .125rem; }
+.db-tile-nota { color: var(--db-suave); font-size: .75rem; margin-top: .125rem; }
+.db-delta { font-size: .8125rem; color: var(--db-tinta-2); margin-top: .125rem; }
+.db-delta .db-sobe-bom, .db-delta .db-desce-bom { color: var(--db-bom); font-weight: 600; }
+.db-delta .db-sobe-ruim, .db-delta .db-desce-ruim { color: var(--db-critico); font-weight: 600; }
+
+/* Situação dos pedidos */
+.db-status-resumo { display: flex; gap: 1.25rem; margin-bottom: .5rem; }
+.db-status-resumo div { display: flex; flex-direction: column; }
+.db-status-resumo strong { font-size: 1.25rem; font-weight: 600; }
+.db-status-resumo span { font-size: .75rem; color: var(--db-tinta-2); }
+
+/* Entrega x retirada: barra segmentada fina (2 partes, 2px de respiro) */
+.db-segmentos { display: flex; gap: 2px; height: 8px; margin: .25rem 0 .75rem; }
+.db-segmentos span { display: block; height: 100%; border-radius: 4px; min-width: 0; }
+.db-legenda { list-style: none; padding: 0; margin: 0; display: grid; gap: .375rem; }
+.db-legenda li { display: flex; align-items: baseline; gap: .5rem; font-size: .875rem; }
+.db-legenda .db-chave { width: 10px; height: 10px; border-radius: 2px; flex: none; align-self: center; }
+.db-legenda .db-legenda-valor { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--db-tinta-2); }
+
+/* Tabelas (visão em tabela dos gráficos e pedidos recentes) */
+.db-tabela-dados { font-size: .875rem; }
+.db-tabela-dados th { color: var(--db-tinta-2); font-weight: 600; border-bottom-color: var(--db-eixo); white-space: nowrap; }
+.db-tabela-dados td.text-end, .db-tabela-dados th.text-end { font-variant-numeric: tabular-nums; }
+.db-tabela { max-height: 340px; overflow: auto; }
+.db-tempo { color: var(--db-suave); font-size: .75rem; }
+
+/* Estados: carregando / vazio / erro (RF07) */
+.db-estado:empty { display: none; }
+.db-estado {
+    position: absolute;
+    inset: 3.25rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    text-align: center;
+    color: var(--db-tinta-2);
+    font-size: .875rem;
+    background: var(--db-superficie);
+    border-radius: 6px;
+}
+.db-carregando .db-tile-valor, .db-carregando .db-hero-valor { opacity: .45; }
+.db-card.db-atualizando::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 10px 10px 0 0;
+    background: linear-gradient(90deg, transparent, var(--db-serie-1), transparent);
+    background-size: 200% 100%;
+    animation: db-progresso 1.1s linear infinite;
+}
+@keyframes db-progresso { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) {
+    .db-card.db-atualizando::after { animation: none; background: var(--db-serie-1); opacity: .5; }
+}
+
+/* Abaixo de 768px o layout mostra o botão ☰ fixo no canto superior esquerdo */
+@media (max-width: 767.98px) {
+    .db-cabecalho > div:first-child { padding-left: 3.25rem; min-height: 44px; }
+}
+
+@media (max-width: 575.98px) {
+    .db-hero-valor { font-size: 40px; }
+    .db-card { padding: .875rem; }
+}

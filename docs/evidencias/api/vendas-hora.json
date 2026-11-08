@@ -1,0 +1,180 @@
+{
+  "agrupamento": "HORA_DO_DIA",
+  "periodo": {
+    "dataInicio": "2026-10-10",
+    "dataFim": "2026-11-08",
+    "dias": 30
+  },
+  "totalPedidos": 450,
+  "faturamentoTotal": 38279.23,
+  "pontos": [
+    {
+      "chave": "0",
+      "rotulo": "00h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "1",
+      "rotulo": "01h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "2",
+      "rotulo": "02h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "3",
+      "rotulo": "03h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "4",
+      "rotulo": "04h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "5",
+      "rotulo": "05h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "6",
+      "rotulo": "06h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "7",
+      "rotulo": "07h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "8",
+      "rotulo": "08h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "9",
+      "rotulo": "09h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "10",
+      "rotulo": "10h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "11",
+      "rotulo": "11h",
+      "pedidos": 24,
+      "faturamento": 2269.4,
+      "ticketMedio": 94.56
+    },
+    {
+      "chave": "12",
+      "rotulo": "12h",
+      "pedidos": 40,
+      "faturamento": 3945.75,
+      "ticketMedio": 98.64
+    },
+    {
+      "chave": "13",
+      "rotulo": "13h",
+      "pedidos": 31,
+      "faturamento": 2375.35,
+      "ticketMedio": 76.62
+    },
+    {
+      "chave": "14",
+      "rotulo": "14h",
+      "pedidos": 0,
+      "faturamento": 0,
+      "ticketMedio": 0
+    },
+    {
+      "chave": "15",
+      "rotulo": "15h",
+      "pedidos": 14,
+      "faturamento": 1010.41,
+      "ticketMedio": 72.17
+    },
+    {
+      "chave": "16",
+      "rotulo": "16h",
+      "pedidos": 10,
+      "faturamento": 912.83,
+      "ticketMedio": 91.28
+    },
+    {
+      "chave": "17",
+      "rotulo": "17h",
+      "pedidos": 10,
+      "faturamento": 931.4,
+      "ticketMedio": 93.14
+    },
+    {
+      "chave": "18",
+      "rotulo": "18h",
+      "pedidos": 74,
+      "faturamento": 6220.1,
+      "ticketMedio": 84.06
+    },
+    {
+      "chave": "19",
+      "rotulo": "19h",
+      "pedidos": 65,
+      "faturamento": 5401.39,
+      "ticketMedio": 83.1
+    },
+    {
+      "chave": "20",
+      "rotulo": "20h",
+      "pedidos": 76,
+      "faturamento": 6684.68,
+      "ticketMedio": 87.96
+    },
+    {
+      "chave": "21",
+      "rotulo": "21h",
+      "pedidos": 67,
+      "faturamento": 5295.51,
+      "ticketMedio": 79.04
+    },
+    {
+      "chave": "22",
+      "rotulo": "22h",
+      "pedidos": 13,
+      "faturamento": 1132.6,
+      "ticketMedio": 87.12
+    },
+    {
+      "chave": "23",
+      "rotulo": "23h",
+      "pedidos": 26,
+      "faturamento": 2099.81,
+      "ticketMedio": 80.76
+    }
+  ]
+}

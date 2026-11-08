@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.umc.pediupatrao.DashboardIntegracaoTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.912 s -- in com.umc.pediupatrao.DashboardIntegracaoTest
