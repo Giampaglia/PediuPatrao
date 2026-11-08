@@ -1,0 +1,168 @@
+{
+  "periodoPadrao": {
+    "dataInicio": "2026-10-10",
+    "dataFim": "2026-11-08",
+    "dias": 30
+  },
+  "limitePeriodoDias": 366,
+  "primeiroPedido": "2026-08-11T11:07:36",
+  "ultimoPedido": "2026-11-08T18:55:09",
+  "status": [
+    {
+      "valor": "RECEBIDO",
+      "descricao": "Recebido"
+    },
+    {
+      "valor": "EM_PREPARACAO",
+      "descricao": "Em preparação"
+    },
+    {
+      "valor": "PRONTO",
+      "descricao": "Pronto"
+    },
+    {
+      "valor": "SAIU_PARA_ENTREGA",
+      "descricao": "Saiu para entrega"
+    },
+    {
+      "valor": "RETIRADO",
+      "descricao": "Retirado"
+    },
+    {
+      "valor": "FINALIZADO",
+      "descricao": "Finalizado"
+    },
+    {
+      "valor": "CANCELADO",
+      "descricao": "Cancelado"
+    }
+  ],
+  "tiposEntrega": [
+    {
+      "valor": "ENTREGA",
+      "descricao": "Entrega"
+    },
+    {
+      "valor": "RETIRADA",
+      "descricao": "Retirada no balcão"
+    }
+  ],
+  "categorias": [
+    "Bebida",
+    "Esfiha",
+    "Lanche",
+    "Pizza"
+  ],
+  "produtos": [
+    {
+      "id": "6af0f0f41679014347f7c24d",
+      "nome": "Esfiha de Carne",
+      "categoria": "Esfiha",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c24e",
+      "nome": "Esfiha de Queijo",
+      "categoria": "Esfiha",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f31679014347f7c247",
+      "nome": "Pizza Calabresa",
+      "categoria": "Pizza",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c24a",
+      "nome": "Pizza Frango com Catupiry",
+      "categoria": "Pizza",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c24c",
+      "nome": "Pizza Margherita",
+      "categoria": "Pizza",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c248",
+      "nome": "Pizza Mussarela",
+      "categoria": "Pizza",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c249",
+      "nome": "Pizza Portuguesa",
+      "categoria": "Pizza",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c24b",
+      "nome": "Pizza Quatro Queijos",
+      "categoria": "Pizza",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c251",
+      "nome": "Refrigerante 2L",
+      "categoria": "Bebida",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c252",
+      "nome": "Suco Natural 1L",
+      "categoria": "Bebida",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c24f",
+      "nome": "X-Burger",
+      "categoria": "Lanche",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c250",
+      "nome": "X-Salada",
+      "categoria": "Lanche",
+      "ativo": true
+    },
+    {
+      "id": "6af0f0f41679014347f7c253",
+      "nome": "Água Mineral 500ml",
+      "categoria": "Bebida",
+      "ativo": true
+    }
+  ],
+  "agrupamentos": [
+    {
+      "valor": "DIA",
+      "descricao": "Por dia"
+    },
+    {
+      "valor": "SEMANA",
+      "descricao": "Por semana (segunda a domingo)"
+    },
+    {
+      "valor": "MES",
+      "descricao": "Por mês"
+    },
+    {
+      "valor": "HORA_DO_DIA",
+      "descricao": "Por hora do dia (horários de pico)"
+    },
+    {
+      "valor": "DIA_DA_SEMANA",
+      "descricao": "Por dia da semana"
+    }
+  ],
+  "criteriosRanking": [
+    {
+      "valor": "QUANTIDADE",
+      "descricao": "Quantidade vendida"
+    },
+    {
+      "valor": "FATURAMENTO",
+      "descricao": "Faturamento"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "dataHora": "2026-11-08T19:01:07.341993400",
+  "status": 400,
+  "erro": "Bad Request",
+  "mensagem": "O período consultado não pode ultrapassar 366 dias (informado: 1043 dias).",
+  "caminho": "/api/dashboard/resumo"
+}

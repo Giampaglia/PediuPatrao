@@ -1,0 +1,7 @@
+{
+  "dataHora": "2026-11-08T19:01:05.501076900",
+  "status": 400,
+  "erro": "Bad Request",
+  "mensagem": "A data inicial (dataInicio) não pode ser posterior à data final (dataFim).",
+  "caminho": "/api/dashboard/resumo"
+}

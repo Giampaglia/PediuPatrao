@@ -1,0 +1,26 @@
+{
+  "periodo": {
+    "dataInicio": "2026-10-10",
+    "dataFim": "2026-11-08",
+    "dias": 30
+  },
+  "totalPedidos": 450,
+  "tipos": [
+    {
+      "tipo": "ENTREGA",
+      "descricao": "Entrega",
+      "pedidos": 270,
+      "faturamento": 22958.04,
+      "ticketMedio": 85.03,
+      "participacao": 60
+    },
+    {
+      "tipo": "RETIRADA",
+      "descricao": "Retirada no balcão",
+      "pedidos": 180,
+      "faturamento": 15321.19,
+      "ticketMedio": 85.12,
+      "participacao": 40
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "agrupamento": "DIA",
+  "periodo": {
+    "dataInicio": "2026-11-02",
+    "dataFim": "2026-11-08",
+    "dias": 7
+  },
+  "totalPedidos": 91,
+  "faturamentoTotal": 7707.86,
+  "pontos": [
+    {
+      "chave": "2026-11-02",
+      "rotulo": "02/11",
+      "pedidos": 7,
+      "faturamento": 561,
+      "ticketMedio": 80.14
+    },
+    {
+      "chave": "2026-11-03",
+      "rotulo": "03/11",
+      "pedidos": 13,
+      "faturamento": 1168.1,
+      "ticketMedio": 89.85
+    },
+    {
+      "chave": "2026-11-04",
+      "rotulo": "04/11",
+      "pedidos": 8,
+      "faturamento": 503,
+      "ticketMedio": 62.88
+    },
+    {
+      "chave": "2026-11-05",
+      "rotulo": "05/11",
+      "pedidos": 13,
+      "faturamento": 935.15,
+      "ticketMedio": 71.93
+    },
+    {
+      "chave": "2026-11-06",
+      "rotulo": "06/11",
+      "pedidos": 19,
+      "faturamento": 1824.41,
+      "ticketMedio": 96.02
+    },
+    {
+      "chave": "2026-11-07",
+      "rotulo": "07/11",
+      "pedidos": 24,
+      "faturamento": 2214.7,
+      "ticketMedio": 92.28
+    },
+    {
+      "chave": "2026-11-08",
+      "rotulo": "08/11",
+      "pedidos": 7,
+      "faturamento": 501.5,
+      "ticketMedio": 71.64
+    }
+  ]
+}

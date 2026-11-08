@@ -1,0 +1,7 @@
+{
+  "dataHora": "2026-11-08T19:01:06.729594200",
+  "status": 400,
+  "erro": "Bad Request",
+  "mensagem": "Valor inválido no parâmetro 'status': 'VOANDO'. Valores aceitos: RECEBIDO, EM_PREPARACAO, PRONTO, SAIU_PARA_ENTREGA, RETIRADO, FINALIZADO, CANCELADO.",
+  "caminho": "/api/dashboard/pedidos/status"
+}

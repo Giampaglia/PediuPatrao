@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+
+<!-- Dashboard administrativo (ADMIN e GERENTE). Todo o conteúdo é carregado
+     pelo navegador a partir da API /api/dashboard (static/js/dashboard.js). -->
+<div th:fragment="content" class="dashboard" id="dashboard">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+
+    <!-- Cabeçalho -->
+    <header class="db-cabecalho">
+        <div>
+            <h2 class="fw-bold mb-0"><i class="bi bi-speedometer2 me-2 text-primary"></i>Dashboard</h2>
+            <p class="db-subtitulo mb-0" id="db-periodo">Carregando indicadores…</p>
+        </div>
+        <div class="db-acoes">
+            <span class="db-subtitulo" id="db-atualizado" aria-live="polite"></span>
+            <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="db-auto" checked>
+                <label class="form-check-label small" for="db-auto">Atualizar a cada 60 s</label>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm" id="db-atualizar">
+                <i class="bi bi-arrow-clockwise"></i> Atualizar
+            </button>
+        </div>
+    </header>
+
+    <!-- RF05 — filtros -->
+    <form id="db-filtros" class="db-card db-filtros" novalidate>
+        <div class="row g-2 align-items-end">
+            <div class="col-12 col-sm-6 col-lg-auto">
+                <label for="f-preset" class="form-label">Período</label>
+                <select id="f-preset" class="form-select form-select-sm">
+                    <option value="hoje">Hoje</option>
+                    <option value="7">Últimos 7 dias</option>
+                    <option value="30" selected>Últimos 30 dias</option>
+                    <option value="90">Últimos 90 dias</option>
+                    <option value="mes">Este mês</option>
+                    <option value="personalizado">Personalizado</option>
+                </select>
+            </div>
+            <div class="col-6 col-sm-3 col-lg-auto">
+                <label for="f-inicio" class="form-label">De</label>
+                <input type="date" id="f-inicio" class="form-control form-control-sm" required>
+            </div>
+            <div class="col-6 col-sm-3 col-lg-auto">
+                <label for="f-fim" class="form-label">Até</label>
+                <input type="date" id="f-fim" class="form-control form-control-sm" required>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-auto">
+                <span class="form-label d-block" id="f-status-rotulo">Status</span>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle w-100 text-start" type="button"
+                            id="f-status-botao" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+                            aria-expanded="false" aria-labelledby="f-status-rotulo f-status-botao">Todos</button>
+                    <div class="dropdown-menu p-2 db-status-menu" id="f-status" aria-labelledby="f-status-botao"></div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-auto">
+                <label for="f-tipo" class="form-label">Tipo de entrega</label>
+                <select id="f-tipo" class="form-select form-select-sm">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-auto">
+                <label for="f-categoria" class="form-label">Categoria</label>
+                <select id="f-categoria" class="form-select form-select-sm">
+                    <option value="">Todas</option>
+                </select>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-auto">
+                <label for="f-produto" class="form-label">Produto</label>
+                <select id="f-produto" class="form-select form-select-sm db-produto">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+            <div class="col-12 col-lg-auto ms-lg-auto d-flex gap-2">
+                <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-funnel"></i> Aplicar</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="f-limpar">Limpar</button>
+            </div>
+        </div>
+        <div class="db-erro-filtro" id="f-erro" role="alert"></div>
+    </form>
+
+    <!-- Alertas gerais (sessão expirada, sem permissão, falhas) -->
+    <div id="db-alerta" aria-live="assertive"></div>
+
+    <!-- RF01 — indicadores gerais -->
+    <section class="row g-3 mb-3" aria-label="Indicadores gerais de vendas" id="db-indicadores">
+        <div class="col-12 col-xl-4">
+            <div class="db-card db-hero h-100" data-secao="resumo">
+                <div class="db-tile-rotulo">Faturamento</div>
+                <div class="db-hero-valor" id="k-faturamento">—</div>
+                <div class="db-delta" id="d-faturamento"></div>
+                <div class="db-hero-rodape" id="k-qualidade"></div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-8">
+            <div class="row row-cols-2 row-cols-md-3 g-3 h-100">
+                <div class="col"><div class="db-card db-tile" data-secao="resumo">
+                    <div class="db-tile-rotulo">Pedidos válidos</div>
+                    <div class="db-tile-valor" id="k-pedidos">—</div>
+                    <div class="db-delta" id="d-pedidos"></div>
+                </div></div>
+                <div class="col"><div class="db-card db-tile" data-secao="resumo">
+                    <div class="db-tile-rotulo">Ticket médio</div>
+                    <div class="db-tile-valor" id="k-ticket">—</div>
+                    <div class="db-delta" id="d-ticket"></div>
+                </div></div>
+                <div class="col"><div class="db-card db-tile" data-secao="resumo">
+                    <div class="db-tile-rotulo">Itens vendidos</div>
+                    <div class="db-tile-valor" id="k-itens">—</div>
+                    <div class="db-tile-nota" id="n-itens"></div>
+                </div></div>
+                <div class="col"><div class="db-card db-tile" data-secao="resumo">
+                    <div class="db-tile-rotulo">Taxa de cancelamento</div>
+                    <div class="db-tile-valor" id="k-cancelamento">—</div>
+                    <div class="db-tile-nota" id="n-cancelamento"></div>
+                </div></div>
+                <div class="col"><div class="db-card db-tile" data-secao="resumo">
+                    <div class="db-tile-rotulo">Descontos concedidos</div>
+                    <div class="db-tile-valor" id="k-descontos">—</div>
+                    <div class="db-tile-nota" id="n-descontos"></div>
+                </div></div>
+                <div class="col"><div class="db-card db-tile" data-secao="resumo">
+                    <div class="db-tile-rotulo">Tempo médio até a saída</div>
+                    <div class="db-tile-valor" id="k-tempo">—</div>
+                    <div class="db-tile-nota">da entrada até sair para entrega ou ser retirado</div>
+                </div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RF02 / RF03 -->
+    <section class="row g-3 mb-3">
+        <div class="col-12 col-lg-8">
+            <div class="db-card db-grafico" id="c-vendas">
+                <div class="db-card-cabecalho">
+                    <div>
+                        <h3>Evolução das vendas</h3>
+                        <p class="db-subtitulo mb-0" id="s-vendas"></p>
+                    </div>
+                    <div class="db-ferramentas">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Métrica" id="t-metrica">
+                            <button type="button" class="btn btn-outline-secondary active" data-valor="faturamento" aria-pressed="true">Faturamento</button>
+                            <button type="button" class="btn btn-outline-secondary" data-valor="pedidos" aria-pressed="false">Pedidos</button>
+                            <button type="button" class="btn btn-outline-secondary" data-valor="ticketMedio" aria-pressed="false">Ticket médio</button>
+                        </div>
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Agrupamento" id="t-agrupamento">
+                            <button type="button" class="btn btn-outline-secondary active" data-valor="DIA" aria-pressed="true">Dia</button>
+                            <button type="button" class="btn btn-outline-secondary" data-valor="SEMANA" aria-pressed="false">Semana</button>
+                            <button type="button" class="btn btn-outline-secondary" data-valor="MES" aria-pressed="false">Mês</button>
+                        </div>
+                        <button type="button" class="btn btn-link btn-sm db-ver-tabela">Ver tabela</button>
+                    </div>
+                </div>
+                <div class="db-area" style="height: 300px"><canvas aria-label="Gráfico de evolução das vendas" role="img"></canvas></div>
+                <div class="db-tabela d-none"></div>
+                <div class="db-estado"></div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-4">
+            <div class="db-card db-grafico" id="c-status">
+                <div class="db-card-cabecalho">
+                    <div>
+                        <h3>Situação dos pedidos</h3>
+                        <p class="db-subtitulo mb-0" id="s-status"></p>
+                    </div>
+                    <div class="db-ferramentas">
+                        <button type="button" class="btn btn-link btn-sm db-ver-tabela">Ver tabela</button>
+                    </div>
+                </div>
+                <div class="db-status-resumo" id="r-status"></div>
+                <div class="db-area" style="height: 240px"><canvas aria-label="Pedidos por status" role="img"></canvas></div>
+                <div class="db-tabela d-none"></div>
+                <div class="db-estado"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="row g-3 mb-3">
+        <div class="col-12 col-lg-6">
+            <div class="db-card db-grafico" id="c-hora">
+                <div class="db-card-cabecalho">
+                    <div>
+                        <h3>Horários de pico</h3>
+                        <p class="db-subtitulo mb-0" id="s-hora"></p>
+                    </div>
+                    <div class="db-ferramentas">
+                        <button type="button" class="btn btn-link btn-sm db-ver-tabela">Ver tabela</button>
+                    </div>
+                </div>
+                <div class="db-area" style="height: 240px"><canvas aria-label="Pedidos por hora do dia" role="img"></canvas></div>
+                <div class="db-tabela d-none"></div>
+                <div class="db-estado"></div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-6">
+            <div class="db-card db-grafico" id="c-semana">
+                <div class="db-card-cabecalho">
+                    <div>
+                        <h3>Movimento por dia da semana</h3>
+                        <p class="db-subtitulo mb-0" id="s-semana"></p>
+                    </div>
+                    <div class="db-ferramentas">
+                        <button type="button" class="btn btn-link btn-sm db-ver-tabela">Ver tabela</button>
+                    </div>
+                </div>
+                <div class="db-area" style="height: 240px"><canvas aria-label="Pedidos por dia da semana" role="img"></canvas></div>
+                <div class="db-tabela d-none"></div>
+                <div class="db-estado"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RF04 -->
+    <section class="row g-3 mb-3">
+        <div class="col-12 col-lg-7">
+            <div class="db-card db-grafico" id="c-ranking">
+                <div class="db-card-cabecalho">
+                    <div>
+                        <h3>Produtos mais vendidos</h3>
+                        <p class="db-subtitulo mb-0" id="s-ranking"></p>
+                    </div>
+                    <div class="db-ferramentas">
+                        <div class="btn-group btn-group-sm" role="group" aria-label="Ordenar ranking por" id="t-criterio">
+                            <button type="button" class="btn btn-outline-secondary active" data-valor="QUANTIDADE" aria-pressed="true">Quantidade</button>
+                            <button type="button" class="btn btn-outline-secondary" data-valor="FATURAMENTO" aria-pressed="false">Faturamento</button>
+                        </div>
+                        <button type="button" class="btn btn-link btn-sm db-ver-tabela">Ver tabela</button>
+                    </div>
+                </div>
+                <div class="db-area" style="height: 340px"><canvas aria-label="Ranking de produtos mais vendidos" role="img"></canvas></div>
+                <div class="db-tabela d-none"></div>
+                <div class="db-estado"></div>
+            </div>
+        </div>
+        <div class="col-12 col-lg-5">
+            <div class="db-card db-grafico" id="c-categorias">
+                <div class="db-card-cabecalho">
+                    <div>
+                        <h3>Faturamento por categoria</h3>
+                        <p class="db-subtitulo mb-0" id="s-categorias"></p>
+                    </div>
+                    <div class="db-ferramentas">
+                        <button type="button" class="btn btn-link btn-sm db-ver-tabela">Ver tabela</button>
+                    </div>
+                </div>
+                <div class="db-area" style="height: 200px"><canvas aria-label="Faturamento por categoria" role="img"></canvas></div>
+                <div class="db-tabela d-none"></div>
+                <div class="db-estado"></div>
+            </div>
+            <div class="db-card mt-3" id="c-tipos">
+                <div class="db-card-cabecalho">
+                    <div>
+                        <h3>Entrega x retirada</h3>
+                        <p class="db-subtitulo mb-0">participação nos pedidos válidos</p>
+                    </div>
+                </div>
+                <div id="r-tipos"></div>
+                <div class="db-estado"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RF03 — pedidos recentes -->
+    <section class="mb-4">
+        <div class="db-card" id="c-recentes">
+            <div class="db-card-cabecalho">
+                <div>
+                    <h3>Pedidos recentes</h3>
+                    <p class="db-subtitulo mb-0">os 10 últimos pedidos do recorte filtrado</p>
+                </div>
+                <a th:href="@{/pedidos}" class="btn btn-link btn-sm">Ver todos os pedidos</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0 db-tabela-dados">
+                    <thead>
+                        <tr>
+                            <th scope="col">Pedido</th>
+                            <th scope="col">Cliente</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col" class="text-end">Itens</th>
+                            <th scope="col" class="text-end">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Entrada</th>
+                        </tr>
+                    </thead>
+                    <tbody id="r-recentes">
+                        <tr><td colspan="7" class="text-center text-secondary py-4">Carregando…</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="db-estado"></div>
+        </div>
+    </section>
+
+    <script th:src="@{/js/vendor/chart.umd.min.js}"></script>
+    <script th:src="@{/js/dashboard.js}"></script>
+</div>
+
+</body>
+</html>
