@@ -72,6 +72,10 @@ public class SecurityConfig {
                         // Administração de usuários e perfis: somente ADMIN
                         .requestMatchers("/usuarios/**", "/api/usuarios/**", "/admin").hasRole(ADMIN)
 
+                        // Dashboard administrativo: somente leitura, para ADMIN e GERENTE
+                        .requestMatchers(HttpMethod.GET, "/dashboard", "/api/dashboard/**").hasAnyRole(ADMIN, GERENTE)
+                        .requestMatchers("/dashboard", "/api/dashboard/**").denyAll()
+
                         // Auditoria: somente leitura, para ADMIN e GERENTE
                         .requestMatchers(HttpMethod.GET, "/auditoria/**", "/api/auditoria/**").hasAnyRole(ADMIN, GERENTE)
                         .requestMatchers("/auditoria/**", "/api/auditoria/**").denyAll()
